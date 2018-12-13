@@ -226,7 +226,7 @@ cpPageUrl = string.Format(cpPageUrl, PaymentTokenNode);
 ```
 
 #### İşlem Sonuç Kodları
-Başarılı işlem cevabı 0000'dır. Hatalı işlemler için Sanal POS'un ve Ortak Ödemenin döndürdüğü hata kodları Tablo2'de gösterilmektedir.
+Başarılı işlem cevabı 0000'dır. Hatalı işlemler için Sanal POS'un ve Ortak Ödemenin döndürdüğü hata kodları aşağıdaki tablo da gösterilmektedir.
 
 | Kod  | Açıklama  |
 |----- | --------- |
