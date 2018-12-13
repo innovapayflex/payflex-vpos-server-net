@@ -74,37 +74,38 @@ var threedPage = mpiResponse.ThreedHTMLPage();
 ```C#
 string serviceUrl = "https://sp-test.innova.com.tr/{Bank}/VposWeb/v3/Vposreq.aspx";
 
-     var paymentManager = new PayFlex.Client.PaymentManager();
+var paymentManger = new PayFlex.Client.PaymentManager();
 
-     var vposRequest = new PayFlex.Client.VposRequest()
+var vposRequest = new PayFlex.Client.VposRequest()
+{
+     MerchantId = "655500056",
+     Password = "123456",
+     TerminalNo = "1",
+     TransactionType = TransactionType.Sale,
+     ServiceUrl = serviceUrl,
+     TransactionId = "b2d71cc5-d242-4b01-8479-d56eb8f74d7c", // opsiyonel
+     CurrencyAmount = (decimal)10.00,
+     CurrencyCode = Currency.TRY,
+     CreditCard = new CreditCard
      {
-         MerchantId = "655500056",
-         Password = "123456",
-         TerminalNo = "1",
-         TransactionType = TransactionType.Sale,
-         ServiceUrl = serviceUrl,
-         TransactionId = "b2d71cc5-d242-4b01-8479-d56eb8f74d7c", // opsiyonel
-         CurrencyAmount = 90.50,
-         CurrencyCode = Currency.TRY,
-         CreditCard = new CreditCard
-         {
-             Pan = "4543600299100712",
-             CVV = "454",
-             ExpireMonth = "11",
-             ExpireYear = "2016",
-             CardHolderIp = "190.20.13.12"
-         },
-         ECI = "05", //opsiyonel(TransactionDeviceSource 0 ise zorunlu, 1 ise, olmamalı) 
-         CAVV = "asfa435redf", //opsiyonel(TransactionDeviceSource 0 ise zorunlu, 1 ise, olmamalı) 
-         ExpSign = "131132451234314132", //opsiyonel --> BKM Ekspress işlemleri için, BKM Express ExpSign değeri bu alanda gönderilebilir. 
-         OrderId = "z2d71cc5-d242-4b01-8479-d56eb8f74d7c", //opsiyonel
-         Location = "1",
-         Extract = "090020304", //opsiyonel
-         DeviceType = DeviceType.Windows,
-         TransactionDeviceSource = TransactionDeviceSource.ECommerce, //opsiyonel
-     };
+     	Pan = "4543600299100712",
+        CVV = "454",
+        ExpireMonth = "11",
+        ExpireYear = "2016",
+        CardHolderIp = "190.20.13.12"
+       },
+       ECI = "05", //opsiyonel(TransactionDeviceSource 0 ise zorunlu, 1 ise, olmamalı) 
+       CAVV = "asfa435redf", //opsiyonel(TransactionDeviceSource 0 ise zorunlu, 1 ise, olmamalı) 
+       ExpSign = "131132451234314132", //opsiyonel --> BKM Ekspress işlemleri için, BKM Express ExpSign değeri bu alanda gönderilebilir. 
+       OrderId = "z2d71cc5-d242-4b01-8479-d56eb8f74d7c", //opsiyonel
+       Location = "1",
+       Extract = "090020304", //opsiyonel
+       DeviceType = DeviceType.Windows,
+       TransactionDeviceSource = TransactionDeviceSource.ECommerce, //opsiyonel
+};
 
-var result = paymentManager.Pay(vposRequest);
+var result = paymentManger.Pay(vposRequest);
+
 ```
 
 #### Response
