@@ -9,7 +9,7 @@
 ```C#
 string serviceUrl = "http://sp-test.innova.com.tr/{Bank}/MpiWeb/MPI_Enrollment.aspx";
 
-var paymentManger = new PayFlex.Client.PaymentManager();
+var paymentManager = new PayFlex.Client.PaymentManager();
 
 var threedRequest = new PayFlex.Client.MpiRequest()
 {
@@ -31,7 +31,7 @@ var threedRequest = new PayFlex.Client.MpiRequest()
     PurchaseAmmount = (decimal)10.01              
 
 };
-var result = paymentManger.Pay(threedRequest);
+var result = paymentManager.Pay(threedRequest);
 ```
 
 #### Response
@@ -74,7 +74,7 @@ var threedPage = mpiResponse.ThreedHTMLPage();
 ```C#
 string serviceUrl = "https://sp-test.innova.com.tr/{Bank}/VposWeb/v3/Vposreq.aspx";
 
-var paymentManger = new PayFlex.Client.PaymentManager();
+var paymentManager = new PayFlex.Client.PaymentManager();
 
 var vposRequest = new PayFlex.Client.VposRequest()
 {
@@ -104,7 +104,7 @@ var vposRequest = new PayFlex.Client.VposRequest()
        TransactionDeviceSource = TransactionDeviceSource.ECommerce, //opsiyonel
 };
 
-var result = paymentManger.Pay(vposRequest);
+var result = paymentManager.Pay(vposRequest);
 
 ```
 
@@ -159,7 +159,7 @@ string serviceUrl = "https://sp-test.innova.com.tr/{Bank}/CPTest";
 
 string cpPageUrl = "https://sp-test.innova.com.tr/{Bank}/CPWeb/SecurePayment?Ptkn={0}&RequestPage=Payment";
 
-var paymentManger = new PayFlex.Client.PaymentManager();            
+var paymentManager = new PayFlex.Client.PaymentManager();            
 
 var commonPaymentRequest = new PayFlex.Client.CommonPaymentRequest()
 {
@@ -189,7 +189,7 @@ var commonPaymentRequest = new PayFlex.Client.CommonPaymentRequest()
                 RequestLanguage = "tr-TR"
     };
  
-var result = paymentManger.Pay(commonPaymentRequest);
+var result = paymentManager.Pay(commonPaymentRequest);
 ```
 
 #### Request
