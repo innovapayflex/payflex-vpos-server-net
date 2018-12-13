@@ -148,7 +148,7 @@ XmlSerializer xmlSerialize = new XmlSerializer(typeof(VPosResponse), xRoot);
 var vposResponse = (VPosResponse)xmlSerialize.Deserialize(memoryStream);
 ```
 
-### Ortal Ödeme Satış İşlemi
+### Ortak Ödeme Satış İşlemi
 
 Ortak Ödeme sayfasında satış işlemine başlamadan önce işlem kaydedilmelidir. İşlemi kaydetmek için CommonPaymentRequest oluşturarak aşağıda belirtilen örnek te yöntem kullanılır. API çağrısının sonucunda Ortak Ödeme sistemi bir GUID dönecektir. Bu GUID ile ortak ödeme sayfası link sayfayı yönlendirebilir.
 
