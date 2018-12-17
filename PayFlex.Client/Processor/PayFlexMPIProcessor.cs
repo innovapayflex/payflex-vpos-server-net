@@ -22,17 +22,16 @@ namespace PayFlex.Client.Processor
             #endregion  
 
             byte[] postByteArray = Encoding.UTF8.GetBytes(payment.ToString());
-            
+
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-
 
             WebRequest webRequest = WebRequest.Create(strHostAddress);
             webRequest.Method = "POST";
             webRequest.ContentType = "application/x-www-form-urlencoded";
             webRequest.ContentLength = postByteArray.Length;
             webRequest.UseDefaultCredentials = true;
-            
+
             Stream dataStream = webRequest.GetRequestStream();
             dataStream.Write(postByteArray, 0, postByteArray.Length);
             dataStream.Close();
@@ -83,15 +82,12 @@ namespace PayFlex.Client.Processor
             postData.AppendFormat("</{0}>", "VposRequest");
 
             byte[] postByteArray = Encoding.UTF8.GetBytes(postData.ToString());
-            
-            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-
 
             WebRequest webRequest = WebRequest.Create(strHostAddress);
             webRequest.Method = "POST";
             webRequest.ContentType = "application/xml";
-            webRequest.ContentLength = postByteArray.Length;            
+            webRequest.ContentLength = postByteArray.Length;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072 | SecurityProtocolType.Tls;
 
             Stream dataStream = webRequest.GetRequestStream();
             dataStream.Write(postByteArray, 0, postByteArray.Length);

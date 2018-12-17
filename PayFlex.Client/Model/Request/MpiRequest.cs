@@ -131,9 +131,9 @@ namespace PayFlex.Client
             if (MerchantType.HasValue)
                 str.AppendFormat("{0}={1}&", "MerchantType", (int)Enum.Parse(typeof(MerchantType), MerchantType.ToString()));
             if (!string.IsNullOrWhiteSpace(SubMerchantId))
-                str.AppendFormat("{0}={1}", "SubMerchantId", SubMerchantId);
+                str.AppendFormat("{0}={1}&", "SubMerchantId", SubMerchantId);
 
-            return str.ToString();
+            return str.ToString().Remove(str.ToString().Length - 1);
         }
     }
 }

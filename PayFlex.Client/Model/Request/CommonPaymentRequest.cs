@@ -91,13 +91,19 @@ namespace PayFlex.Client
             NumberFormatInfo moneyFormatInfo = new NumberFormatInfo();
             moneyFormatInfo.NumberDecimalSeparator = ".";
 
+            if (CreditCard == null)
+            {
+                CreditCard = new CreditCard();
+            }
+
+
             var str = new StringBuilder();
             if (!string.IsNullOrWhiteSpace(HostMerchantId))
                 str.AppendFormat("{0}={1}&", "HostMerchantId", HostMerchantId);
 
             if (AmountCode.HasValue)
                 str.AppendFormat("{0}={1}&", "AmountCode", (int)Enum.Parse(typeof(Currency), AmountCode.Value.ToString()));
-           
+
             str.AppendFormat("{0}={1}&", "Amount", Amount.ToString(moneyFormatInfo));
 
             if (!string.IsNullOrWhiteSpace(MerchantPassword))
@@ -138,9 +144,10 @@ namespace PayFlex.Client
             if (!string.IsNullOrWhiteSpace(HostTerminalId))
                 str.AppendFormat("{0}={1}&", "HostTerminalId", HostTerminalId);
             if (!string.IsNullOrWhiteSpace(HostSubMerchantId))
-                str.AppendFormat("{0}={1}", "HostSubMerchantId", HostSubMerchantId);
+                str.AppendFormat("{0}={1}&", "HostSubMerchantId", HostSubMerchantId);
 
-            return str.ToString();
+
+            return str.ToString().Remove(str.ToString().Length - 1);
         }
     }
 }

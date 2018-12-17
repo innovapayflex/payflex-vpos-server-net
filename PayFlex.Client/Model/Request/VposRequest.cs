@@ -138,6 +138,11 @@ namespace PayFlex.Client
             NumberFormatInfo moneyFormatInfo = new NumberFormatInfo();
             moneyFormatInfo.NumberDecimalSeparator = ".";
 
+            if (CreditCard == null)
+            {
+                CreditCard = new CreditCard();
+            }
+
             StringBuilder strXML = new StringBuilder();
             strXML.AppendFormat("<{0}>", "VposRequest");
             if (!string.IsNullOrWhiteSpace(MerchantId))
