@@ -1,4 +1,4 @@
-# PayFlex Vpos C# .Net 
+# PayFlex Vpos Server C# .Net 
 
 # Kullanım
 
