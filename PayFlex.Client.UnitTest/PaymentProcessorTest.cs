@@ -15,12 +15,18 @@ namespace PayFlex.Client.UnitTest
         //+ Test_Threed_Post_Payment_Then_Return_GetAnyResponse
         //+ Test_CommonPayment_Post_Payment_Then_Return_GetAnyResponse
 
+        private PaymentManager _paymentManager;
+
+        [OneTimeSetUp]
+        public void Init()
+        {
+            _paymentManager = new PaymentManager();
+        }
+
         [Test]
         public void Test_Vpos_Post_Payment_Then_Return_GetAnyResponse()
         {
-            string serviceUrl = "https://sp-test.innova.com.tr/VAKIFBANK_V4/VposWeb/v3/Vposreq.aspx";
-
-            var paymentManger = new PayFlex.Client.PaymentManager();
+            string serviceUrl = "https://sp-test.innova.com.tr/VAKIFBANK_V4/VposWeb/v3/Vposreq.aspx";           
 
             var vposRequest = new PayFlex.Client.VposRequest()
             {
@@ -50,7 +56,7 @@ namespace PayFlex.Client.UnitTest
                 TransactionDeviceSource = TransactionDeviceSource.ECommerce, //opsiyonel
             };
 
-            var result = paymentManger.Pay(vposRequest);
+            var result = _paymentManager.Pay(vposRequest);
             Assert.AreNotEqual("", result.Response);
 
 
@@ -69,9 +75,7 @@ namespace PayFlex.Client.UnitTest
         [Test]
         public void Test_Threed_Post_Payment_Then_Return_GetAnyResponse()
         {
-            string serviceUrl = "http://sp-test.innova.com.tr/VAKIFBANK/MpiWeb/MPI_Enrollment.aspx";
-
-            var paymentManger = new PayFlex.Client.PaymentManager();
+            string serviceUrl = "http://sp-test.innova.com.tr/VAKIFBANK/MpiWeb/MPI_Enrollment.aspx";            
 
             var threedRequest = new PayFlex.Client.MpiRequest()
             {
@@ -94,7 +98,7 @@ namespace PayFlex.Client.UnitTest
 
             };
 
-            var result = paymentManger.Pay(threedRequest);
+            var result = _paymentManager.Pay(threedRequest);
 
             Assert.AreNotEqual("", result.Response);
 
@@ -119,9 +123,7 @@ namespace PayFlex.Client.UnitTest
         {
             string serviceUrl = "https://sp-test.innova.com.tr/VAKIFBANK_V4/CPTest";
 
-            string cpPageUrl = "https://sp-test.innova.com.tr/VAKIFBANK_v4/CPWeb/SecurePayment?Ptkn={0}&RequestPage=Payment";
-
-            var paymentManger = new PayFlex.Client.PaymentManager();            
+            string cpPageUrl = "https://sp-test.innova.com.tr/VAKIFBANK_v4/CPWeb/SecurePayment?Ptkn={0}&RequestPage=Payment";           
 
             var commonPaymentRequest = new PayFlex.Client.CommonPaymentRequest()
             {
@@ -151,7 +153,7 @@ namespace PayFlex.Client.UnitTest
                 RequestLanguage = "tr-TR"
             };
 
-            var result = paymentManger.Pay(commonPaymentRequest);
+            var result = _paymentManager.Pay(commonPaymentRequest);
 
             Assert.AreNotEqual("", result.Response);
 
