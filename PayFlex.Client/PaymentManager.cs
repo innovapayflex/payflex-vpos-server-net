@@ -11,7 +11,7 @@ namespace PayFlex.Client
             PaymentProcessorFactory<ICommonPaymentProcessor>.Register(VposPaymentSupplier.CommonPayment, () => new PayFlexCommonPaymentProcessor());
         }
 
-        public PaymentResponse Pay(Payment payment)
+        public PaymentResponse PostProcess(Payment payment)
         {
             try
             {
@@ -39,6 +39,12 @@ namespace PayFlex.Client
                         CommonPaymentRequest commonPaymentRequest = payment as CommonPaymentRequest;
                         result = _paymentCommonProcessor.Pay(commonPaymentRequest);
 
+                        break;
+                    case PaymentType.VPosCancel:
+
+                        var _paymentVposCancelProcessor = PaymentProcessorFactory<IVposPaymentProcessor>.Create(VposPaymentSupplier.VPos);
+                        VposRequest vposCancelRequest = payment as VposRequest;
+                        result = _paymentVposCancelProcessor.CancellationRefund(vposCancelRequest);
                         break;
                 }
 

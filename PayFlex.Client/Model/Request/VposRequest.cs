@@ -132,6 +132,10 @@ namespace PayFlex.Client
         /// Ör: 00000000000471
         /// </summary>
         public string SubMerchantId { get; set; }
+        /// <summary>
+        /// İşlemi yapan son kullanıcının IP si Üye iş yeri tarafından alınıp sanal posa gönderilecektir
+        /// </summary>
+        public string ClientIp { get; set; }
 
         public string ToXML()
         {
@@ -215,6 +219,9 @@ namespace PayFlex.Client
                 strXML.AppendFormat("<{0}>{1}</{0}>", "MerchantType", (int)Enum.Parse(typeof(MerchantType), MerchantType.ToString()));
             if (!string.IsNullOrWhiteSpace(SubMerchantId))
                 strXML.AppendFormat("<{0}>{1}</{0}>", "SubMerchantId", SubMerchantId);
+            if(!string.IsNullOrWhiteSpace(ClientIp))
+                strXML.AppendFormat("<{0}>{1}</{0}>", "ClientIp", ClientIp);
+
             strXML.AppendFormat("</{0}>", "VposRequest");
 
             return strXML.ToString();

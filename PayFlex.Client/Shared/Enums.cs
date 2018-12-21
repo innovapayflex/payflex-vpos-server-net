@@ -16,6 +16,7 @@ namespace PayFlex.Client
     public enum PaymentType
     {
         VPos,
+        VPosCancel,
         MPI,
         CommonPayment,
     }

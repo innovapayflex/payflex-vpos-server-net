@@ -8,7 +8,6 @@ namespace PayFlex.Client.Processor
 {
     public class PayFlexVPosProcessor : IVposPaymentProcessor
     {
-
         /// <summary>
         ///  PayFlex Vpos satış işlemi.
         /// </summary>
@@ -50,6 +49,50 @@ namespace PayFlex.Client.Processor
             reader.Close();
             dataStream.Close();
             webResponse.Close();           
+
+            return bankResponse;
+        }
+
+        /// <summary>
+        /// Sadece Satış, Taksitli Satış, Satış, İade, Taksitli Satış İade, Ön Provizyon, Provizyon Kapama, Puan Kullanım, Referanssız İade, VFT Satış, Kredi Kart Test işlemleri iptal edilebilir.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public PaymentResponse CancellationRefund(VposRequest input)
+        {
+            #region Pos Configuration             
+            string strHostAddress = input.ServiceUrl;
+            #endregion
+           
+
+            var postData = new StringBuilder();
+            postData.AppendFormat("{0}", "prmstr=<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+            postData.AppendFormat("{0}", input.ToXML());
+
+            byte[] postByteArray = Encoding.UTF8.GetBytes(postData.ToString());
+
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
+            WebRequest webRequest = WebRequest.Create(strHostAddress);
+            webRequest.Method = "POST";
+            webRequest.ContentType = "application/x-www-form-urlencoded";
+            webRequest.ContentLength = postByteArray.Length;
+            webRequest.UseDefaultCredentials = true;
+
+            Stream dataStream = webRequest.GetRequestStream();
+            dataStream.Write(postByteArray, 0, postByteArray.Length);
+            dataStream.Close();
+
+            WebResponse webResponse = webRequest.GetResponse();
+            dataStream = webResponse.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            var bankResponse = new PaymentResponse();
+            bankResponse.Response = reader.ReadToEnd();
+            bankResponse.IsSuccessful = true;
+            reader.Close();
+            dataStream.Close();
+            webResponse.Close();
 
             return bankResponse;
         }
