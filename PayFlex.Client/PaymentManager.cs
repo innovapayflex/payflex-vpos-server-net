@@ -40,7 +40,7 @@ namespace PayFlex.Client
                         result = _paymentCommonProcessor.Pay(commonPaymentRequest);
 
                         break;
-                    case PaymentType.VPosCancel:
+                    case PaymentType.VPosCancellationRefund:
 
                         var _paymentVposCancelProcessor = PaymentProcessorFactory<IVposPaymentProcessor>.Create(VposPaymentSupplier.VPos);
                         VposRequest vposCancelRequest = payment as VposRequest;
