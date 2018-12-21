@@ -77,9 +77,9 @@ namespace PayFlex.Client.UnitTest
         {
             string serviceUrl = "https://sp-test.innova.com.tr/VAKIFBANK_V4/VposWeb/v3/Vposreq.aspx";
 
-            var vposRequest = new PayFlex.Client.VposRequest()
+            var vposCancelRequest = new PayFlex.Client.VposRequest()
             {
-                PaymentType = PaymentType.VPosCancel,
+                PaymentType = PaymentType.VPosCancellationRefund,
                 MerchantId = "655500056",
                 Password = "123456",                
                 TransactionType = TransactionType.Cancel,
@@ -90,9 +90,29 @@ namespace PayFlex.Client.UnitTest
                 DeviceType = DeviceType.Android                
             };
 
-            var result = _paymentManager.PostProcess(vposRequest);
-            Assert.AreNotEqual("", result.Response);
+            var resultCancel = _paymentManager.PostProcess(vposCancelRequest);
+
+            var vposRefundRequest = new PayFlex.Client.VposRequest()
+            {
+                PaymentType = PaymentType.VPosCancellationRefund,
+                MerchantId = "655500056",
+                Password = "123456",
+                CurrencyAmount = (decimal)90.50,
+                CurrencyCode = Currency.TRY,
+                TransactionType = TransactionType.Refund,
+                ServiceUrl = serviceUrl,
+                ReferenceTransactionId = "b2d71cc5-d242-4b01-8479-d56eb8f74d7c", // opsiyonel
+                ClientIp = "127.0.0.1",
+                Location = "1",
+                DeviceType = DeviceType.Android
+            };
+
+            var resultRefund = _paymentManager.PostProcess(vposRefundRequest);
+
+            Assert.AreNotEqual("", resultCancel.Response);
         }
+
+
 
         [Test]
         public void Test_Threed_Post_Payment_Then_Return_GetAnyResponse()
