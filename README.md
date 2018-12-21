@@ -31,7 +31,7 @@ var threedRequest = new PayFlex.Client.MpiRequest()
     PurchaseAmmount = (decimal)10.01              
 
 };
-var result = paymentManager.Pay(threedRequest);
+var result = paymentManager.PostProcess(threedRequest);
 ```
 
 #### Response
@@ -104,7 +104,7 @@ var vposRequest = new PayFlex.Client.VposRequest()
        TransactionDeviceSource = TransactionDeviceSource.ECommerce, //opsiyonel
 };
 
-var result = paymentManager.Pay(vposRequest);
+var result = paymentManager.PostProcess(vposRequest);
 
 ```
 
@@ -233,7 +233,7 @@ var commonPaymentRequest = new PayFlex.Client.CommonPaymentRequest()
                 RequestLanguage = "tr-TR"
     };
  
-var result = paymentManager.Pay(commonPaymentRequest);
+var result = paymentManager.PostProcess(commonPaymentRequest);
 ```
 
 #### Request
