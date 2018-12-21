@@ -56,7 +56,7 @@ namespace PayFlex.Client.UnitTest
                 TransactionDeviceSource = TransactionDeviceSource.ECommerce, //opsiyonel
             };
 
-            var result = _paymentManager.Pay(vposRequest);
+            var result = _paymentManager.PostProcess(vposRequest);
             Assert.AreNotEqual("", result.Response);
 
 
@@ -70,6 +70,28 @@ namespace PayFlex.Client.UnitTest
             XmlSerializer xmlSerialize = new XmlSerializer(typeof(VPosResponse), xRoot);
             var vposResponse = (VPosResponse)xmlSerialize.Deserialize(memoryStream);
             #endregion
+        }
+
+        [Test]
+        public void Test_VPos_Cancellation_Refund_Then_Return_GetAnyResponse()
+        {
+            string serviceUrl = "https://sp-test.innova.com.tr/VAKIFBANK_V4/VposWeb/v3/Vposreq.aspx";
+
+            var vposRequest = new PayFlex.Client.VposRequest()
+            {
+                PaymentType = PaymentType.VPosCancel,
+                MerchantId = "655500056",
+                Password = "123456",                
+                TransactionType = TransactionType.Cancel,
+                ServiceUrl = serviceUrl,
+                ReferenceTransactionId = "b2d71cc5-d242-4b01-8479-d56eb8f74d7c", // opsiyonel
+                ClientIp = "127.0.0.1",
+                Location = "1",
+                DeviceType = DeviceType.Android                
+            };
+
+            var result = _paymentManager.PostProcess(vposRequest);
+            Assert.AreNotEqual("", result.Response);
         }
 
         [Test]
@@ -98,7 +120,7 @@ namespace PayFlex.Client.UnitTest
 
             };
 
-            var result = _paymentManager.Pay(threedRequest);
+            var result = _paymentManager.PostProcess(threedRequest);
 
             Assert.AreNotEqual("", result.Response);
 
@@ -153,7 +175,7 @@ namespace PayFlex.Client.UnitTest
                 RequestLanguage = "tr-TR"
             };
 
-            var result = _paymentManager.Pay(commonPaymentRequest);
+            var result = _paymentManager.PostProcess(commonPaymentRequest);
 
             Assert.AreNotEqual("", result.Response);
 
