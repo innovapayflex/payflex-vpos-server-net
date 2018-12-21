@@ -148,6 +148,50 @@ XmlSerializer xmlSerialize = new XmlSerializer(typeof(VPosResponse), xRoot);
 var vposResponse = (VPosResponse)xmlSerialize.Deserialize(memoryStream);
 ```
 
+### Vpos Satış İptal & İade İşlemi
+
+#### Request
+
+```C#
+//Satış İptal
+string serviceUrl = "https://sp-test.innova.com.tr/VAKIFBANK_V4/VposWeb/v3/Vposreq.aspx";
+
+var vposRequest = new PayFlex.Client.VposRequest()
+{
+    PaymentType = PaymentType.VPosCancellationRefund,
+    MerchantId = "655500056",
+    Password = "123456",                
+    TransactionType = TransactionType.Cancel,
+    ServiceUrl = serviceUrl,
+    ReferenceTransactionId = "b2d71cc5-d242-4b01-8479-d56eb8f74d7c", // opsiyonel
+    ClientIp = "127.0.0.1",
+    Location = "1",
+    DeviceType = DeviceType.Android                
+};
+
+var result = _paymentManager.PostProcess(vposRequest);
+```
+
+```C#
+//Satış İade
+var vposRefundRequest = new PayFlex.Client.VposRequest()
+{
+    PaymentType = PaymentType.VPosCancellationRefund,
+    MerchantId = "655500056",
+    Password = "123456",
+    CurrencyAmount = (decimal)90.50,
+    CurrencyCode = Currency.TRY,
+    TransactionType = TransactionType.Refund,
+    ServiceUrl = serviceUrl,
+    ReferenceTransactionId = "b2d71cc5-d242-4b01-8479-d56eb8f74d7c", // opsiyonel
+    ClientIp = "127.0.0.1",
+    Location = "1",
+    DeviceType = DeviceType.Android
+};
+
+var resultRefund = _paymentManager.PostProcess(vposRefundRequest);
+```
+
 ### Ortak Ödeme Satış İşlemi
 
 Ortak Ödeme sayfasında satış işlemine başlamadan önce işlem kaydedilmelidir. İşlemi kaydetmek için CommonPaymentRequest oluşturarak aşağıda belirtilen örnek te yöntem kullanılır. API çağrısının sonucunda Ortak Ödeme sistemi bir GUID dönecektir. Bu GUID ile ortak ödeme sayfası link sayfayı yönlendirebilir.
