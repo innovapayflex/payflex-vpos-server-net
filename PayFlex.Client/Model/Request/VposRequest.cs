@@ -202,7 +202,15 @@ namespace PayFlex.Client
             if (!string.IsNullOrWhiteSpace(ECI))
                 strXML.AppendFormat("<{0}>{1}</{0}>", "ECI", ECI);
             if (CustomItems != null)
-                strXML.AppendFormat("<{0}>{1}</{0}>", "CustomItems", CustomItems);
+            {
+                strXML.AppendFormat("<{0}>", "CustomItems");
+                for (int i = 0; i < CustomItems.Count; i++)
+                {
+                    strXML.AppendFormat($"<Item name=\"{CustomItems.ElementAt(0).Key}\" value=\"{CustomItems.ElementAt(0).Value}\"/>");
+                }
+                strXML.AppendFormat("</{0}>", "CustomItems");
+            }
+
             if (DeviceType.HasValue)
                 strXML.AppendFormat("<{0}>{1}</{0}>", "DeviceType", (int)Enum.Parse(typeof(DeviceType), DeviceType.ToString()));
             if (TransactionDeviceSource.HasValue)
@@ -219,8 +227,10 @@ namespace PayFlex.Client
                 strXML.AppendFormat("<{0}>{1}</{0}>", "MerchantType", (int)Enum.Parse(typeof(MerchantType), MerchantType.ToString()));
             if (!string.IsNullOrWhiteSpace(SubMerchantId))
                 strXML.AppendFormat("<{0}>{1}</{0}>", "SubMerchantId", SubMerchantId);
-            if(!string.IsNullOrWhiteSpace(ClientIp))
+            if (!string.IsNullOrWhiteSpace(ClientIp))
                 strXML.AppendFormat("<{0}>{1}</{0}>", "ClientIp", ClientIp);
+
+
 
             strXML.AppendFormat("</{0}>", "VposRequest");
 
