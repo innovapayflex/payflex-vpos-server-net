@@ -136,6 +136,14 @@ namespace PayFlex.Client
         /// İşlemi yapan son kullanıcının IP si Üye iş yeri tarafından alınıp sanal posa gönderilecektir
         /// </summary>
         public string ClientIp { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool? IsRecurring { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string TriggerDate { get; set; }
 
         public string ToXML()
         {
@@ -195,6 +203,10 @@ namespace PayFlex.Client
                 strXML.AppendFormat("<{0}>{1}</{0}>", "RecurringFrequencyType", RecurringFrequencyType);
             if (RecurringFrequency.HasValue)
                 strXML.AppendFormat("<{0}>{1}</{0}>", "RecurringFrequency", RecurringFrequency);
+            if (IsRecurring.HasValue)
+                strXML.AppendFormat("<{0}>{1}</{0}>", "IsRecurring", IsRecurring.Value);
+            if (!string.IsNullOrWhiteSpace(TriggerDate))
+                strXML.AppendFormat("<{0}>{1}</{0}>", "TriggerDate", TriggerDate);
             if (RecurringInstallmentCount.HasValue)
                 strXML.AppendFormat("<{0}>{1}</{0}>", "RecurringInstallmentCount", RecurringInstallmentCount);
             if (!string.IsNullOrWhiteSpace(CAVV))
