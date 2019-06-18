@@ -12,7 +12,9 @@ namespace PayFlex.Client.UnitTest
     public class PaymentProcessorTest
     {
         //+ Test_Vpos_Post_Payment_Then_Return_GetAnyResponse
+        //+ Test_VPos_Cancellation_Refund_Then_Return_GetAnyResponse 
         //+ Test_Threed_Post_Payment_Then_Return_GetAnyResponse
+        //+ Test_Threed_Post_Payment_By_3DS_Permission_Then_Return_GetAnyResponse
         //+ Test_CommonPayment_Post_Payment_Then_Return_GetAnyResponse
 
         private PaymentManager _paymentManager;
@@ -112,8 +114,6 @@ namespace PayFlex.Client.UnitTest
             Assert.AreNotEqual("", resultCancel.Response);
         }
 
-
-
         [Test]
         public void Test_Threed_Post_Payment_Then_Return_GetAnyResponse()
         {
@@ -121,20 +121,66 @@ namespace PayFlex.Client.UnitTest
 
             var threedRequest = new PayFlex.Client.MpiRequest()
             {
-                MerchantId = "000000000006528",
+                MerchantId = "000000000000471",
                 MerchantPassword = "123456",
                 ServiceUrl = serviceUrl,
                 CreditCard = new CreditCard
                 {
                     Pan = "4938410160702981",
-                    CVV = "243",
+                    CVV = "060",
                     ExpireMonth = "03",
                     ExpireYear = "24",
                     BrandName = BrandName.Visa,
                     CardHolderIp = "190.20.13.12"
                 },
                 Currency = Currency.TRY,
-                VerifyEnrollmentRequestId = "000001",
+                VerifyEnrollmentRequestId = "000001123qas",
+                SessionInfo = "243",
+                PurchaseAmmount = (decimal)10.01
+
+            };
+
+            var result = _paymentManager.PostProcess(threedRequest);
+
+            Assert.AreNotEqual("", result.Response);
+
+
+            #region XML Response Deserialize
+            XmlRootAttribute xRoot = new XmlRootAttribute();
+            xRoot.ElementName = "IPaySecure";
+            xRoot.IsNullable = true;
+            string cleanXml = Regex.Replace(result.Response, @"<[a-zA-Z].[^(><.)]+/>", new MatchEvaluator(RemoveText));
+            MemoryStream memoryStream = new MemoryStream((new UTF8Encoding()).GetBytes(cleanXml));
+            XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
+            XmlSerializer xmlSerialize = new XmlSerializer(typeof(MPIResponse), xRoot);
+            var mpiResponse = (MPIResponse)xmlSerialize.Deserialize(memoryStream);
+
+            //3D enrollment satış işlem sayfası
+            var threedPage = mpiResponse.ThreedHTMLPage();
+            #endregion
+        }
+
+        [Test]
+        public void Test_Threed_Post_Payment_By_3DS_Permission_Then_Return_GetAnyResponse()
+        {
+            string serviceUrl = "http://sp-test.innova.com.tr/VAKIFBANK/MpiWeb/MPI_Enrollment.aspx";
+
+            var threedRequest = new PayFlex.Client.MpiRequest()
+            {
+                MerchantId = "000000000000471",
+                MerchantPassword = "123456",
+                ServiceUrl = serviceUrl,
+                CreditCard = new CreditCard
+                {
+                    Pan = "4289450189088488",
+                    CVV = "060",
+                    ExpireMonth = "04",
+                    ExpireYear = "23",
+                    BrandName = BrandName.Visa,
+                    CardHolderIp = "190.20.13.12"
+                },
+                Currency = Currency.TRY,
+                VerifyEnrollmentRequestId = "00000112311",
                 SessionInfo = "243",
                 PurchaseAmmount = (decimal)10.01
 
@@ -185,9 +231,9 @@ namespace PayFlex.Client.UnitTest
                 FailUrl = "https://sp-test.innova.com.tr/VAKIFBANK_V4/CPTest/Fail.aspx",
                 CreditCard = new CreditCard
                 {
-                    Pan = "4402939925637022",
-                    CVV = "544",
-                    ExpireMonth = "02",
+                    Pan = "4289450189088488",
+                    CVV = "060",
+                    ExpireMonth = "04",
                     ExpireYear = "2023",
                     CardHolderIp = "190.20.13.12",
                     BrandName = BrandName.Visa

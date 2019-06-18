@@ -21,7 +21,7 @@ namespace PayFlex.Client.WebApi.Controllers
                 value.PaymentType = PaymentType.VPos;
                 value.TransactionId = Guid.NewGuid().ToString();
                 value.OrderId = Guid.NewGuid().ToString();
-                var paymentResponse = paymentManager.Pay(value);
+                PaymentResponse paymentResponse = paymentManager.PostProcess(value);
 
                 return paymentResponse;
             }
